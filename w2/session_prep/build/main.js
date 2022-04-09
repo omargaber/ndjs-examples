@@ -8,6 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Account = void 0;
 // Bank Account class
 class Account {
     // Class Constructor
@@ -106,6 +108,7 @@ class Account {
     }
     ;
 }
+exports.Account = Account;
 const homeAddress = {
     city: "Liverpool",
     street: 1,
@@ -114,11 +117,12 @@ const homeAddress = {
 };
 const x = new Account("Mo Salah", 29, 100, homeAddress);
 x.accountInfo();
-// x.deposit(150).then((result: number)=> {
-//     return x.addAmount(result)
-// }).then((result: string)=>{
-//     console.log(result)
-// }).catch(()=>{
-//     console.log("An error occurred.")
-// })
+console.log("DEPOSIT OPERATION");
+x.deposit(50).then((result) => {
+    return x.addAmount(result);
+}).then((result) => {
+    console.log(result);
+}).catch(() => {
+    console.log("An error occurred.");
+});
 x.withdraw(50);

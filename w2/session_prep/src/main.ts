@@ -128,12 +128,15 @@ const homeAddress: Address = {
 const x = new Account("Mo Salah", 29, 100, homeAddress);
 x.accountInfo();
 
-// x.deposit(150).then((result: number)=> {
-//     return x.addAmount(result)
-// }).then((result: string)=>{
-//     console.log(result)
-// }).catch(()=>{
-//     console.log("An error occurred.")
-// })
+console.log("DEPOSIT OPERATION");
+x.deposit(50).then((result: number)=> {
+    return x.addAmount(result)
+}).then((result: string)=>{
+    console.log(result)
+}).catch(()=>{
+    console.log("An error occurred.")
+})
 
 x.withdraw(50);
+
+export { Account, Address }
