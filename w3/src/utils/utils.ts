@@ -1,3 +1,4 @@
+import { strictEqual } from 'assert';
 import express from 'express';
 import { existsSync, mkdirSync } from 'fs';
 
@@ -7,6 +8,11 @@ const logger = (
   next: Function
 ): void => {
   console.log('LOGGER MIDDLEWARE CALLED!');
+  
+  // To modify the response, following the docs here is the method
+  // Reference: http://expressjs.com/en/api.html
+  
+  res.write("TEST");
   // Why is next important??
   next();
 };
@@ -41,7 +47,7 @@ const paramValidator = (request: express.Request): [boolean, string] => {
     } else if (!request.query.first_name) {
       return [false, 'First Name missing.'];
     } else if (!request.query.last_name) {
-      return [false, 'Last Name missing.'];
+      return [false, 'Last Name Missing.'];
     } else {
       return [true, `${request.query.first_name}${request.query.last_name}`];
     }

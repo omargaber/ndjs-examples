@@ -23,7 +23,7 @@ loans.post('/', utils.logger, (req, res) => {
 
       if (clientExist) {
         const loanFileInfo = await fsPromises.open(`${loanPath}`, 'a+');
-        const accountReader = await readFile(
+        const accountInfo = await readFile(
           dirPath,
           'utf-8',
           async (err, data) => {
@@ -31,9 +31,9 @@ loans.post('/', utils.logger, (req, res) => {
             accountInfo['loan_amount'] = accountInfo.balance * 10000;
             accountInfo['status'] = 'Approved';
             delete accountInfo['balance'];
-            await loanFileInfo.write(JSON.stringify(accountInfo));
           }
         );
+        await loanFileInfo.write(JSON.stringify(accountInfo));
 
         res.send('Loan Created Successfully');
       } else {
