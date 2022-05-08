@@ -13,8 +13,6 @@ const {
 } = process.env
 
 
-console.log()
-
 let client: Pool
 console.log('---------------------------------')
 console.log(ENV)
