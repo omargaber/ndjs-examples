@@ -16,6 +16,9 @@ const {
 console.log()
 
 let client: Pool
+console.log('---------------------------------')
+console.log(ENV)
+console.log('---------------------------------')
 
 
 if(ENV === 'test'){

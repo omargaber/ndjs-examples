@@ -10,13 +10,12 @@ const index = async (_req: Request, res: Response)=> {
 }
 
 const show = async (req:Request, res: Response) => {
-    const user = await store.show(req.body.id)
+    const user = await store.show(req.params.id)
     res.json(user);
 }
 
 const create = async (req:Request, res:Response) => {
     try {
-        console.log("CREATE");
         const user: User = {
             first_name: req.body.first_name,
             last_name: req.body.last_name,

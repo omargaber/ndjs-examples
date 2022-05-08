@@ -4,11 +4,12 @@
   "description": "",
   "main": "src/server.ts",
   "scripts": {
-    "start": "nodemon src/server.ts",
+    "start": "node build/server.js",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
+    "test": "export ENV=test && db-migrate --env test up && jasmine-ts && db-migrate db:drop test",
+    "build": "npx tsc",
     "tsc": "tsc",
-    "migrate": "db-migrate --env test up && db-migrate up",
-    "test": "ENV=test db-migrate --env test up && jasmine-ts && db-migrate db:drop test"
+    "migrate": "db-migrate --env test up && db-migrate up"
   },
   "author": "omargaber",
   "license": "ISC",

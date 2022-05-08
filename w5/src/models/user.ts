@@ -26,7 +26,7 @@ export class UserStore {
     async show(id: string): Promise<User> {
         try{
             const conn = await client.connect();
-            const query = `SELECT * FROM users where id=${id}`
+            const query = `SELECT * FROM users where id='${id}'`
             // const query = 'SELECT * FROM users where id=($1)'
             // const result = await conn.query(query, [id])
             const result = await conn.query(query)
@@ -34,7 +34,7 @@ export class UserStore {
             return result.rows[0]
         }
         catch(err){
-            throw new Error(`Cannot get user with id ${id}. Error: ${err}`)
+            throw new Error(`Cannot get user with id = ${id}. Error: ${err}`)
         }
     }
 
