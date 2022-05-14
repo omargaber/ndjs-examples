@@ -35,8 +35,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
 var user_1 = require("../models/user");
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var global_1 = __importDefault(require("../middleware/global"));
+var secret = process.env.TOKEN_SECRET;
 var store = new user_1.UserStore();
 var index = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var users;
@@ -63,7 +69,7 @@ var show = function (req, res) { return __awaiter(void 0, void 0, void 0, functi
     });
 }); };
 var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, newUser;
+    var user, newUser, token;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -74,10 +80,13 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                     email: req.body.email,
                     password: req.body.password
                 };
-                return [4 /*yield*/, store.create(user)];
+                return [4 /*yield*/, store.create(user)
+                    // Creating tokens and returning it to the client side
+                ];
             case 1:
                 newUser = _a.sent();
-                res.json(newUser);
+                token = jsonwebtoken_1["default"].sign({ user: newUser }, secret);
+                res.json(token);
                 return [2 /*return*/];
         }
     });
@@ -95,22 +104,60 @@ var showSavings = function (req, res) { return __awaiter(void 0, void 0, void 0,
     });
 }); };
 var login = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var userAuth;
+    var userAuth, token;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, store.authenticate(req.body.email, req.body.password)];
             case 1:
                 userAuth = _a.sent();
-                res.json(userAuth);
+                if (userAuth) {
+                    token = jsonwebtoken_1["default"].sign({ user: userAuth }, secret);
+                    res.json(token);
+                }
+                else {
+                    res.json(userAuth);
+                }
                 return [2 /*return*/];
+        }
+    });
+}); };
+var update = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user_id, authHeader, decoded, user, updatedUser, err_1;
+    var _a;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                user_id = parseInt(req.params.id);
+                _b.label = 1;
+            case 1:
+                _b.trys.push([1, 6, , 7]);
+                authHeader = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
+                decoded = jsonwebtoken_1["default"].verify(authHeader, secret);
+                if (!(decoded.user.id !== user_id)) return [3 /*break*/, 2];
+                throw new Error('User ID mismatch with token');
+            case 2: return [4 /*yield*/, store.show(req.params.id)];
+            case 3:
+                user = _b.sent();
+                return [4 /*yield*/, store.update(user, req.body)];
+            case 4:
+                updatedUser = _b.sent();
+                res.json(updatedUser);
+                _b.label = 5;
+            case 5: return [3 /*break*/, 7];
+            case 6:
+                err_1 = _b.sent();
+                res.json(err_1);
+                return [3 /*break*/, 7];
+            case 7: return [2 /*return*/];
         }
     });
 }); };
 var user_routes = function (app) {
     app.get('/', index);
-    app.get('/show/:id', show);
+    app.get('/show/:id', global_1["default"], show);
     app.post('/create', create);
     app.get('/savings/:id', showSavings);
     app.post('/login', login);
+    app.patch('/update/:id', update);
 };
 exports["default"] = user_routes;

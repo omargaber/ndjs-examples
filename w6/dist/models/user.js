@@ -173,6 +173,42 @@ var UserStore = /** @class */ (function () {
             });
         });
     };
+    UserStore.prototype.update = function (user, values) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, f_name, l_name, balance, query, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        if (values.first_name) {
+                            f_name = values.first_name;
+                        }
+                        else {
+                            f_name = null;
+                        }
+                        if (values.last_name) {
+                            l_name = values.last_name;
+                        }
+                        else {
+                            l_name = null;
+                        }
+                        if (values.balance) {
+                            balance = values.balance;
+                        }
+                        else {
+                            balance = null;
+                        }
+                        query = "UPDATE users SET first_name = COALESCE($1, first_name), last_name=COALESCE($2, last_name), balance=COALESCE($3, balance) where id=".concat(user.id, " RETURNING *");
+                        return [4 /*yield*/, database_1["default"].query(query, [f_name, l_name, balance])];
+                    case 2:
+                        result = _a.sent();
+                        conn.release();
+                        return [2 /*return*/, result.rows[0]];
+                }
+            });
+        });
+    };
     return UserStore;
 }());
 exports.UserStore = UserStore;

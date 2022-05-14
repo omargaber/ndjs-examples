@@ -11,6 +11,12 @@ export type User = {
 
 }
 
+export type userUpdate = {
+    first_name?: string | null;
+    last_name?: string | null;
+    balance?: number | null;
+}
+
 
 const pepper = process.env.BCRYPT_PASSWORD as string;
 const saltRounds = process.env.SALT_ROUNDS as string;
@@ -90,5 +96,34 @@ export class UserStore {
             return null;
         }
         return null;
+    }
+
+    async update(user: User, values: userUpdate): Promise<User> {
+        const conn = await client.connect()
+        let f_name, l_name: string | null
+        let balance: number | null
+        if (values.first_name){
+            f_name = values.first_name
+        }
+        else {
+            f_name = null
+        }
+
+        if (values.last_name){
+            l_name = values.last_name
+        }
+        else {
+            l_name = null
+        }
+        if (values.balance){
+            balance = values.balance
+        }
+        else{
+            balance = null
+        }
+        const query = `UPDATE users SET first_name = COALESCE($1, first_name), last_name=COALESCE($2, last_name), balance=COALESCE($3, balance) where id=${user.id} RETURNING *`;
+        const result = await client.query(query, [f_name, l_name, balance]);
+        conn.release()
+        return result.rows[0]
     }
 }
