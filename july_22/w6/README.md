@@ -6,7 +6,7 @@ This repository is to be the reference for the FSNDJS Storefront Project mock up
 At first, you need to install the node packages to start working on your project.
 
 ```
-npm run install
+npm install
 ```
 
 ## Understanding the structure of your project.
