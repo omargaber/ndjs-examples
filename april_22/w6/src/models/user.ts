@@ -121,6 +121,7 @@ export class UserStore {
         else{
             balance = null
         }
+
         const query = `UPDATE users SET first_name = COALESCE($1, first_name), last_name=COALESCE($2, last_name), balance=COALESCE($3, balance) where id=${user.id} RETURNING *`;
         const result = await client.query(query, [f_name, l_name, balance]);
         conn.release()

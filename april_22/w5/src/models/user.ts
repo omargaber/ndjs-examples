@@ -14,6 +14,7 @@ export class UserStore {
         try{
             const conn = await client.connect();
             const query = 'SELECT * FROM users'
+            // is returning niche to postgres
             const result = await conn.query(query)
             conn.release()
             return result.rows

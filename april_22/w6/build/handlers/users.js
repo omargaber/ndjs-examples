@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_1 = require("../models/user");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const global_1 = __importDefault(require("../middleware/global"));
 const secret = process.env.TOKEN_SECRET;
 const store = new user_1.UserStore();
 const index = async (req, res) => {
@@ -29,12 +30,14 @@ const show = async (req, res) => {
         const authHeader = req.headers.authorization?.split(' ')[1];
         const decoded = jsonwebtoken_1.default.verify(authHeader, secret);
         if (decoded.user.id !== user_id) {
-            throw new Error('User ID mismatch with token');
+            res.json('User ID mismatch with token');
+            return;
         }
         else {
             const user = await store.show(req.params.id);
             // const updatedUser = await store.update(user, req.body);
             res.json(user);
+            return;
         }
     }
     catch (err) {
@@ -92,7 +95,7 @@ const update = async (req, res) => {
     }
 };
 const user_routes = (app) => {
-    app.get('/', index);
+    app.get('/', global_1.default, index);
     app.get('/show/:id', show);
     app.post('/create', create);
     app.get('/savings/:id', showSavings);

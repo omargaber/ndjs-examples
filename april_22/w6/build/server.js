@@ -21,3 +21,4 @@ app.use(body_parser_1.default.json());
 app.listen(3000, function () {
     console.log(`starting app on: ${address}`);
 });
+exports.default = app;

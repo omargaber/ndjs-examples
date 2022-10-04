@@ -10,4 +10,3 @@ const index = async (req:Request, res: Response) => {
     const users = await store.index()
     res.json(users)
 }
-
