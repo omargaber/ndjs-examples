@@ -12,5 +12,6 @@ routes.get('/', (req, res)=> {
 
 routes.use('/accounts', accounts);
 // routes.use('/loans', loans);
+// routes.use('/savings', savings);
 
 export default routes;

@@ -5,7 +5,7 @@ import { existsSync, mkdirSync } from 'fs';
 const logger = (
   req: express.Request,
   res: express.Response,
-  next
+  next: Function
 ): void => {
   console.log('LOGGER MIDDLEWARE CALLED!');
   
