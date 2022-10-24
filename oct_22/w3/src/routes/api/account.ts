@@ -5,7 +5,7 @@ import { promises as fsPromises, readFile } from 'fs';
 const accounts = express.Router();
 
 // Get accounts
-accounts.get('/', utils.logger,  async (req: express.Request, res: express.Response): Promise<void> => {
+accounts.get('/', utils.logger, async (req: express.Request, res: express.Response): Promise<void> => {
   const readData = async () => {
     const validatedData = utils.paramValidator(req);
     console.log(`========>> ${validatedData}`);
